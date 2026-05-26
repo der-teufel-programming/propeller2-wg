@@ -1,0 +1,48 @@
+M[12:0]             Input           Output                      CIOHHHLLL   OE      DAC     ADC     ADC Mode    Comparator
+
+Digital Mode:
+0000_CIOHHHLLL
+     0IOHHHLLL      Logic
+     1IOHHHLLL      Logic, Clocked
+0001_CIOHHHLLL
+     0IOHHHLLL      Logic with Feedback
+     1IOHHHLLL      Logic with Feedback, Clocked
+0010_CIOHHHLLL
+     0IOHHHLLL      Logic with Adjacent-Pin Feedback
+     1IOHHHLLL      Logic with Adjacent-Pin Feedback, Clocked
+0011_CIOHHHLLL
+     0IOHHHLLL      Schmitt
+     1IOHHHLLL      Schmitt, Clocked
+0100_CIOHHHLLL      
+     0IOHHHLLL      Schmitt with Feedback
+     1IOHHHLLL      Schmitt with Feedback, Clocked
+0101_CIOHHHLLL
+     0IOHHHLLL      Schmitt with Adjacent-Pin Feedback
+     1IOHHHLLL      Schmitt with Adjacent-Pin Feedback, Clocked
+0110_CIOHHHLLL      
+     0IOHHHLLL      Comparator
+     1IOHHHLLL      Comparator, Clocked
+0111_CIOHHHLLL      
+     0IOHHHLLL      Comparator with Feedback
+     1IOHHHLLL      Comparator with Feedback, Clocked
+
+ADC Mode:
+100SSS_OHHHLLL      ADC with Optional Drive
+
+DAC Mode:
+101zz_DDDDDDDD      DAC with Optional DAC
+
+Level Comparator:
+1100_CDDDDDDDD      
+     0DDDDDDDD      Level Comparator with 1.5k Output
+     1DDDDDDDD      Level Comparator with 1.5k Output, Clocked
+1101_CDDDDDDDD      
+     0DDDDDDDD      Level Comparator with Local Feedback
+     1DDDDDDDD      Level Comparator with Local Feedback, Clocked
+1110_CDDDDDDDD      
+     0DDDDDDDD      Level Comparator with Separate Feedback
+     1DDDDDDDD      Level Comparator with Separate Feedback, Clocked
+1111_CDDDDDDDD       
+     0DDDDDDDD      Level Comparator with Separate Feedback, Inverted
+     1DDDDDDDD      Level Comparator with Separate Feedback, Inverted, Clocked
+

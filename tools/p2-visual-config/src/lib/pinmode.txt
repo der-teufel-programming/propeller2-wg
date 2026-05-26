@@ -1,0 +1,34 @@
+M[12:0]             Input           Output                      CIOHHHLLL   OE      DAC     ADC     ADC Mode    Comparator
+
+Digital Mode:
+0000_CIOHHHLLL      Pin Logic       OUT                         CIOHHHLLL   DIR     0       0       -           0
+0001_CIOHHHLLL      Pin Logic       Input                       CIOHHHLLL   DIR     0       0       -           0
+0010_CIOHHHLLL      Adj Logic       Input                       CIOHHHLLL   DIR     0       0       -           0
+0011_CIOHHHLLL      Pin Schmitt     OUT                         CIOHHHLLL   DIR     0       0       -           0
+0100_CIOHHHLLL      Pin Schmitt     Input                       CIOHHHLLL   DIR     0       0       -           0
+0101_CIOHHHLLL      Adj Schmitt     Input                       CIOHHHLLL   DIR     0       0       -           0
+0110_CIOHHHLLL      Pin > Adj       OUT                         CIOHHHLLL   DIR     0       0       -           Pin > Adj
+0111_CIOHHHLLL      Pin > Adj       Input                       CIOHHHLLL   DIR     0       0       -           Pin > Adj
+
+ADC Mode:
+100000_OHHHLLL      ADC, GND        OUT                         10OHHHLLL   DIR     0       1       000         0
+100001_OHHHLLL      ADC, Vxxyy      OUT                         10OHHHLLL   DIR     0       1       001         0
+100010_OHHHLLL      ADC, float      OUT                         10OHHHLLL   DIR     0       1       010         0
+100011_OHHHLLL      ADC, Pin 1x     OUT                         10OHHHLLL   DIR     0       1       011         0
+100100_OHHHLLL      ADC, Pin 3.16x  OUT                         10OHHHLLL   DIR     0       1       100         0
+100101_OHHHLLL      ADC, Pin 10x    OUT                         10OHHHLLL   DIR     0       1       101         0
+100110_OHHHLLL      ADC, Pin 31.6x  OUT                         10OHHHLLL   DIR     0       1       110         0
+100111_OHHHLLL      ADC, Pin 100x   OUT                         10OHHHLLL   DIR     0       1       111         0
+
+DAC Mode:
+10100_DDDDDDDD      ADC, Pin 1x     DAC 990 Ω,    3.3 V         10xxxxxxx   0       DIR     OUT     011         0
+10101_DDDDDDDD      ADC, Pin 1x     DAC 600 Ω,    2.0 V         10xxxxxxx   0       DIR     OUT     011         0
+10110_DDDDDDDD      ADC, Pin 1x     DAC 123.75 Ω, 3.3 V         10xxxxxxx   0       DIR     OUT     011         0
+10111_DDDDDDDD      ADC, Pin 1x     DAC 75 Ω,     2.0 V         10xxxxxxx   0       DIR     OUT     011         0
+
+Level Comparator:
+1100_CDDDDDDDD      Pin > D         OUT, 1.5 kΩ                 C00001001   DIR     0       0       -           Pin > D
+1101_CDDDDDDDD      Pin > D         !Input, 1.5 kΩ              C01001001   DIR     0       0       -           Pin > D
+1110_CDDDDDDDD      Adj > D         Input, 1.5 kΩ               C00001001   DIR     0       0       -           Adj > D
+1111_CDDDDDDDD      Adj > D         !Input, 1.5 kΩ              C01001001   DIR     0       0       -           Adj > D
+
