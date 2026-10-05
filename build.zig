@@ -107,9 +107,7 @@ pub fn build(b: *std.Build) void {
 
         run_cmd.step.dependOn(b.getInstallStep());
 
-        if (b.args) |args| {
-            run_cmd.addArgs(args);
-        }
+        run_cmd.addPassthruArgs();
 
         run_step.dependOn(&run_cmd.step);
     }
@@ -172,7 +170,7 @@ pub fn build(b: *std.Build) void {
 
         // Propan Behaviour Tests
         {
-            const parser_tests = make_sequencing_step(b, "parser tests");
+            const parser_tests = b.step("parser-tests", "");
             test_step.dependOn(parser_tests);
 
             for (parser_accept_tests) |accept_file| {
@@ -184,7 +182,7 @@ pub fn build(b: *std.Build) void {
                 parser_tests.dependOn(&run.step);
             }
 
-            const sema_tests = make_sequencing_step(b, "parser tests");
+            const sema_tests = b.step("sema-tests", "");
             sema_tests.dependOn(parser_tests);
             test_step.dependOn(sema_tests);
 
@@ -197,7 +195,7 @@ pub fn build(b: *std.Build) void {
                 sema_tests.dependOn(&run.step);
             }
 
-            const equivalence_tests = make_sequencing_step(b, "parser tests");
+            const equivalence_tests = b.step("equivalence-tests", "");
             equivalence_tests.dependOn(sema_tests);
             test_step.dependOn(equivalence_tests);
 
@@ -247,15 +245,15 @@ pub fn build(b: *std.Build) void {
     }
 }
 
-fn make_sequencing_step(b: *std.Build, name: []const u8) *std.Build.Step {
-    const step = b.allocator.create(std.Build.Step) catch @panic("OOM");
-    step.* = .init(.{
-        .id = .custom,
-        .name = b.fmt("{s}", .{name}),
-        .owner = b,
-    });
-    return step;
-}
+// fn make_sequencing_step(b: *std.Build, name: []const u8) *std.Build.Step {
+//     const step = b.allocator.create(std.Build.Step) catch @panic("OOM");
+//     step.* = .init(.{
+//         .id = .custom,
+//         .name = b.fmt("{s}", .{name}),
+//         .owner = b,
+//     });
+//     return step;
+// }
 
 const examples: []const []const u8 = &[_][]const u8{
     "examples/propio-client.propan",

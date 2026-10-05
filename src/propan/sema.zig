@@ -1548,7 +1548,7 @@ const Analyzer = struct {
     }
 
     fn cast_value_to_2(ana: *Analyzer, location: ast.Location, exec_mode: eval.ExecMode, value: Value, comptime U: type) !U {
-        const I = std.meta.Int(.signed, @bitSizeOf(U));
+        const I = @Int(.signed, @bitSizeOf(U));
 
         const raw_value: i64 = switch (value.value) {
             .int => |int| int,
@@ -2181,7 +2181,7 @@ const Analyzer = struct {
         }
 
         var argv: BoundedArray(Value, max_supported_parameters) = .{};
-        var argv_ok: std.bit_set.IntegerBitSet(max_supported_parameters) = .initEmpty();
+        var argv_ok: std.bit_set.Integer(max_supported_parameters) = .empty;
 
         argv.resize(params.len) catch unreachable; // we asserted capacity above
 
@@ -2829,15 +2829,15 @@ pub const EncodedInstruction = struct {
 
         pub fn @"union"(lhs: Effects, rhs: Effects) Effects {
             var results = std.mem.zeroes(Effects);
-            inline for (std.meta.fields(Effects)) |fld| {
-                @field(results, fld.name) = @field(lhs, fld.name) and @field(rhs, fld.name);
+            inline for (@typeInfo(Effects).@"struct".field_names) |fld_name| {
+                @field(results, fld_name) = @field(lhs, fld_name) and @field(rhs, fld_name);
             }
             return results;
         }
 
         pub fn any(value: Effects) bool {
-            inline for (std.meta.fields(Effects)) |fld| {
-                if (@field(value, fld.name))
+            inline for (@typeInfo(Effects).@"struct".field_names) |fld_name| {
+                if (@field(value, fld_name))
                     return true;
             }
             return false;

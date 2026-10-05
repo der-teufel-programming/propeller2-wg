@@ -10,16 +10,16 @@
             .hash = "parser_toolkit-0.1.0-baYGPUVCEwBaVmu09ORh0lLlVjRaJ489TdSIdTa_8VWg",
         },
         .args = .{
-            .url = "git+https://github.com/Khitiara/zig-args.git#d47ae21768f9ec47c2a4154ab48b87166965b820",
-            .hash = "args-0.0.0-CiLiqmvgAADyJmrzcQTP9IOYNvTzR_KGrg3ZNNsH2Qv0",
+            .url = "git+https://github.com/ikskuh/zig-args#ad3c89ecdb2979b8b5d52b43b78e79bf51293235",
+            .hash = "args-0.0.0-CiLiqmHiAABlN6icC9sZHdp8HVplOXDxuUNz2VUY_K2X",
         },
         .serial = .{
-            .url = "git+https://github.com/ZigEmbeddedGroup/serial.git#4b1b1ed97d94e061c63b9843a859b9e48980b0ba",
-            .hash = "serial-0.0.1-PoeRzEG3AACu3kynEWOamZSgaSjjtPkXmWlhGjarG0dE",
+            .url = "git+https://github.com/ZigEmbeddedGroup/serial.git#25b58d0ea62f7bfc33e6c147c1c02193a50c65fb",
+            .hash = "serial-0.0.1-PoeRzD66AACCQUHzsIssi6bOcEtnQFPebT6WLvno0I_p",
         },
         .p2devsuite = .{
-            .url = "git+https://github.com/ikskuh/p2-devsuite.git?ref=zig-0.16.0#1fed4ac69e9266dbfec90f2497c36ff246130532",
-            .hash = "p2_devsuite-0.0.0-JopzWOBkAAAkFgjK0rkSKY7AYbYyAHuVSCFJgM5C1TsQ",
+            .url = "git+https://github.com/der-teufel-programming/p2-devsuite?ref=zig-0.17#179db19ade5e33114e976582077032449833908b",
+            .hash = "p2_devsuite-0.0.0-JopzWOBkAACbxhyMhxe1fNr9oMpi8TDB00ucczWXBXYh",
             .lazy = true,
         },
     },

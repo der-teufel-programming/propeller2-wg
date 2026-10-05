@@ -21,30 +21,29 @@ pub fn function(comptime T: type) Function {
 
     var params: []const Parameter = &.{};
 
-    const pdecls = @typeInfo(@TypeOf(T.params)).@"struct".fields;
+    const pdecl_names = @typeInfo(@TypeOf(T.params)).@"struct".field_names;
 
     const InvokeType = @TypeOf(T.invoke);
     const invoke_info = @typeInfo(InvokeType).@"fn";
 
-    const has_ctx = if (invoke_info.params.len > 0)
-        invoke_info.params[0].type == EvalContext
+    const has_ctx = if (invoke_info.param_types.len > 0)
+        invoke_info.param_types[0] == EvalContext
     else
         false;
 
-    const invoke_params = if (has_ctx)
-        invoke_info.params[1..]
+    const invoke_param_types = if (has_ctx)
+        invoke_info.param_types[1..]
     else
-        invoke_info.params;
+        invoke_info.param_types;
 
-    if (pdecls.len != invoke_params.len)
+    if (pdecl_names.len != invoke_param_types.len)
         @compileError("parameter mismatch!");
 
-    for (pdecls, 0..) |fld, i| {
-        const name = fld.name;
+    for (pdecl_names, 0..) |name, i| {
         const value = @field(T.params, name);
         const Param = @TypeOf(value);
 
-        const ptype = invoke_params[i];
+        const ptype = invoke_param_types[i];
 
         var default: ?Value = null;
         if (@hasField(Param, "default")) {
@@ -53,7 +52,7 @@ pub fn function(comptime T: type) Function {
 
         const param: sema.Function.Parameter = .{
             .name = name,
-            .type = derive_value_type(ptype.type.?),
+            .type = derive_value_type(ptype.?),
             .docs = value.docs,
             .default_value = default,
         };
@@ -68,29 +67,29 @@ pub fn function(comptime T: type) Function {
                 @compileError("ArgsTuple expects a function type");
 
             const function_info = info.@"fn";
-            if (function_info.is_var_args)
+            if (function_info.attrs.varargs)
                 @compileError("Cannot create ArgsTuple for variadic function");
 
             const delta = if (has_ctx) 1 else 0;
 
-            var argument_field_list: [function_info.params.len - delta]type = undefined;
-            inline for (function_info.params[delta..], 0..) |arg, i| {
-                const Arg = arg.type orelse @compileError("cannot create ArgsTuple for function with an 'anytype' parameter");
+            var argument_field_list: [function_info.param_types.len - delta]type = undefined;
+            inline for (function_info.param_types[delta..], 0..) |arg_type, i| {
+                const Arg = arg_type orelse @compileError("cannot create ArgsTuple for function with an 'anytype' parameter");
                 argument_field_list[i] = Arg;
             }
 
-            return std.meta.Tuple(&argument_field_list);
+            return @Tuple(&argument_field_list);
         }
 
         fn invoke(ctx: EvalContext, args: []const eval.Value) EvalError!eval.Value {
-            if (args.len != invoke_params.len)
+            if (args.len != invoke_param_types.len)
                 return error.InvalidArgCount;
-            const args_fixed = args[0..invoke_params.len];
+            const args_fixed = args[0..invoke_param_types.len];
 
             var mapped_args: ArgsTuple(InvokeType) = undefined;
 
             inline for (&mapped_args, args_fixed, 0..) |*dst, arg, index| {
-                const param = @field(T.params, pdecls[index].name);
+                const param = @field(T.params, pdecl_names[index]);
                 const Param = @TypeOf(param);
 
                 dst.* = try convert_to_type(@TypeOf(dst.*), arg);
@@ -138,16 +137,16 @@ pub fn namespace(comptime ns: anytype) Namespace {
     };
 
     var decls: []const KV = &.{};
-    for (info.fields) |fld| {
-        const item = @field(ns, fld.name);
+    for (info.field_names) |fld_name| {
+        const item = @field(ns, fld_name);
         switch (@TypeOf(item)) {
             Function => decls = decls ++ &[1]KV{
-                .{ fld.name, item },
+                .{ fld_name, item },
             },
 
             Namespace => for (item.keys(), item.values()) |k, v| {
                 decls = decls ++ &[1]KV{
-                    .{ fld.name ++ "." ++ k, v },
+                    .{ fld_name ++ "." ++ k, v },
                 };
             },
 
@@ -284,6 +283,7 @@ fn convert_to_type(comptime T: type, value: Value) EvalError!T {
         .error_union,
         .comptime_int,
         .comptime_float,
+        .spirv,
         => @compileError("Unsupported parameter type: " ++ @typeName(T)),
     }
 }
